@@ -1,31 +1,61 @@
 <!DOCTYPE html>
+<!-- Thymeleafを使用する宣言 -->
+<!-- Thymeleafとは：HTMLで使用するテンプレートエンジン -->
+<!-- HTMLの中にJavaのオブジェクトをはめ込んでWebページを表示するのに使用する -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<!-- タブ名の設定 -->
 <title>四則演算</title>
 </head>
 <body>
+	<!-- 1.タイトル -->
 	<h1 align="center">四則演算</h1>
+
+	<!-- 2.注意メッセージ -->
 	<p align="center">※値は-100から100まで入力可能です</p>
 
+	<!--▼1-->
+	<!-- 9.エラーメッセージ -->
+	<!-- th:if属性でerrorMessageがnullでない場合のみ表示する -->
 	<div align="center" th:if="${errorMessage} != null">
-		<span style="color:red" th:text="${errorMessage}"></span>
+		<!-- th:text属性でspanタグの内容を設定 -->
+		<span style="color: red" th:text="${errorMessage}"></span>
 	</div>
 
 	<div align="center">
+
+		<!--▼2-->
+		<!-- /calcにリクエストを送るフォーム -->
 		<form action="/calc">
 			<p>
-				<input type="text" name="inputX" size="20" maxlength="4" th:value="${inputX}">
+				<!-- 3.数値入力ボックスX -->
+				<!-- name属性でパラメータの名前を付ける(@ModelAttributeと対応) -->
+				<!-- th:value属性で初期値を設定 -->
+				<!-- th:value属性の値をname属性の値と同じにしているので入力値が保持される -->
+				<input type="text" name="inputX" size="20" maxlength="4"
+					th:value="${inputX}">
+
+				<!-- 5.演算方法入力ボックス -->
 				<select name="operator">
+					<!-- th:selected属性でセレクトボックスの初期値を決定 -->
+					<!-- /calc から返ってきたoperatorの中身がSUBTRACTだった場合は － が初期値になる -->
+					<!-- /calc に送信するパラメータは ＋－×÷ ではなく、value属性に設定した値 -->
 					<option value="ADD" th:selected="${operator.name()} == 'ADD'">＋</option>
-					<option value="SUBTRACT" th:selected="${operator.name()} == 'SUBTRACT'">－</option>
-					<option value="MULTIPLY" th:selected="${operator.name()} == 'MULTIPLY'">×</option>
+					<option value="SUBTRACT"
+						th:selected="${operator.name()} == 'SUBTRACT'">－</option>
+					<option value="MULTIPLY"
+						th:selected="${operator.name()} == 'MULTIPLY'">×</option>
 					<option value="DIVIDE" th:selected="${operator.name()} == 'DIVIDE'">÷</option>
 				</select>
-				<input type="text" name="inputY" size="20" maxlength="4" th:value="${inputY}">
+
+				<!-- 4.数値入力ボックスY -->
+				<input type="text" name="inputY" size="20" maxlength="4"
+					th:value="${inputY}">
 			</p>
 
 			<p>
+				<!-- 6.計算実行ボタン -->
 				<input type="submit" name="calculate" value="計算">
 			</p>
 
@@ -33,19 +63,27 @@
 	</div>
 
 
+	<!-- 計算結果がnullでない場合、このdivブロックが有効になる -->
+	                          <!--▼3-->
 	<div align="center" th:if="${result} != null">
+
+		<!-- 7.計算結果ラベル -->
 		<div>計算結果</div>
+
+		<!-- 8.計算結果表示スペース -->
+		              <!--▼4-->
 		<span th:text="${inputX}"></span>
 
-		<span th:switch="${operator.name()}">
-			<span th:case="ADD">＋</span>
-			<span th:case="SUBTRACT" >－</span>
-			<span th:case="MULTIPLY">×</span>
+		<!-- リクエストに使用していたADD等に対応する記号を表示 -->
+		<!--▼5-->
+		<span th:switch="${operator.name()}"> <span th:case="ADD">＋</span>
+			<span th:case="SUBTRACT">－</span> <span th:case="MULTIPLY">×</span>
 			<span th:case="DIVIDE">÷</span>
 		</span>
 
-		<span th:text="${inputY}"></span>
-		=
+		              <!--▼6-->
+		<span th:text="${inputY}"></span> =
+		              <!--▼7-->
 		<span th:text="${result}"></span>
 	</div>
 
