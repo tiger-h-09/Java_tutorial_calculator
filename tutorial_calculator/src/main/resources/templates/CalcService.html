@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>四則演算</title>
+</head>
+<body>
+	<h1 align="center">四則演算</h1>
+	<p align="center">※値は-100から100まで入力可能です</p>
+
+	<div align="center" th:if="${errorMessage} != null">
+		<span style="color:red" th:text="${errorMessage}"></span>
+	</div>
+
+	<div align="center">
+		<form action="/calc">
+			<p>
+				<input type="text" name="inputX" size="20" maxlength="4" th:value="${inputX}">
+				<select name="operator">
+					<option value="ADD" th:selected="${operator.name()} == 'ADD'">＋</option>
+					<option value="SUBTRACT" th:selected="${operator.name()} == 'SUBTRACT'">－</option>
+					<option value="MULTIPLY" th:selected="${operator.name()} == 'MULTIPLY'">×</option>
+					<option value="DIVIDE" th:selected="${operator.name()} == 'DIVIDE'">÷</option>
+				</select>
+				<input type="text" name="inputY" size="20" maxlength="4" th:value="${inputY}">
+			</p>
+
+			<p>
+				<input type="submit" name="calculate" value="計算">
+			</p>
+
+		</form>
+	</div>
+
+
+	<div align="center" th:if="${result} != null">
+		<div>計算結果</div>
+		<span th:text="${inputX}"></span>
+
+		<span th:switch="${operator.name()}">
+			<span th:case="ADD">＋</span>
+			<span th:case="SUBTRACT" >－</span>
+			<span th:case="MULTIPLY">×</span>
+			<span th:case="DIVIDE">÷</span>
+		</span>
+
+		<span th:text="${inputY}"></span>
+		=
+		<span th:text="${result}"></span>
+	</div>
+
+
+</body>
+</html>
